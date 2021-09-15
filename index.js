@@ -4,7 +4,7 @@ const async = require('async')
 const app = express()
 const port = process.env.PORT || '3000'
 
-const countries = ['ae', 'kw', 'ps', 'bh', 'eg', 'iq', 'jo', 'lb', 'qa', 'sa', 'sy', 'tr']
+const countries = ['ae', 'kw', 'ps', 'bh', 'eg', 'lb', 'qa', 'sa', 'sy']
 function callback(error, response, body, cb) {
   if(error || response.statusCode != 200)
     return cb(true);
