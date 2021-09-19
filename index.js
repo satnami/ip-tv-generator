@@ -3,6 +3,7 @@ const request = require('request')
 const async = require('async')
 const app = express()
 
+const cache_ttl = process.env.CACHE_TTL || 3600
 const port = process.env.PORT || '3000'
 const redis_url = process.env.REDIS_URL || 'redis://localhost:6379'
 const countries = ['ae', 'kw', 'ps', 'bh', 'eg', 'lb', 'qa', 'sa', 'sy']
@@ -22,7 +23,7 @@ let tasks = {};
 countries.forEach(function (country) {
   tasks[country] = function (cb) {
     request({
-      url: "https://raw.githubusercontent.com/iptv-org/iptv/master/channels/" + country + ".m3u"
+      url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/channels/' + country + '.m3u'
     }, function (error, response, body) {
 
       callback(error, response, body.split('\n'), cb);
@@ -31,7 +32,7 @@ countries.forEach(function (country) {
 })
 
 
-app.get('/', cache.route({ expire: 10 }), (req, res) => {
+app.get('/', cache.route({ expire: cache_ttl }), (req, res) => {
   async.parallel(tasks, function (err, resp) {
     if (err) {
       res.send("");
@@ -49,5 +50,5 @@ app.get('/', cache.route({ expire: 10 }), (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log('Starting App')
 })
