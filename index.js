@@ -23,7 +23,7 @@ let tasks = {};
 countries.forEach(function (country) {
   tasks[country] = function (cb) {
     request({
-      url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/channels/' + country + '.m3u'
+      url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/streams/' + country + '.m3u'
     }, function (error, response, body) {
 
       callback(error, response, body.split('\n'), cb);
