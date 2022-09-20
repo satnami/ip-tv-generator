@@ -23,16 +23,15 @@ let tasks = {};
 countries.forEach(function (country) {
   tasks[country] = function (cb) {
     request({
-      url: 'https://raw.githubusercontent.com/iptv-org/iptv/master/channels/' + country + '.m3u'
+      url: 'https://iptv-org.github.io/iptv/countries/' + country + '.m3u'
     }, function (error, response, body) {
-
       callback(error, response, body.split('\n'), cb);
     });
   }
 })
 
 
-app.get('/', cache.route({ expire: cache_ttl }), (req, res) => {
+app.get('/', cache.route('iptv', cache_ttl), (req, res) => {
   async.parallel(tasks, function (err, resp) {
     if (err) {
       res.send("");
